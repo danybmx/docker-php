@@ -1,6 +1,8 @@
 # PHP Docker image for development
 
-Based on official php images but including composer and following extensions:
+![Build](https://github.com/danybmx/docker-php/workflows/Build/badge.svg?branch=main)
+
+Based on official php images but including **composer** and following extensions:
 
 - gd
 - zip
@@ -10,4 +12,3 @@ Based on official php images but including composer and following extensions:
 - pdo_mysql
 - soap
 - imagick
-
