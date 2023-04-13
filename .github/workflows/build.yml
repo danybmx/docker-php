@@ -1,4 +1,4 @@
-name: Build
+name: Build & Publish
 
 on:
   push:
@@ -8,7 +8,12 @@ on:
 
 jobs:
   build:
+    strategy:
+      matrix:
+        version: ["7.2", "7.3", "7.4", "8.0", "8.1", "8.2"]
     runs-on: ubuntu-latest
+    env:
+      PHP_VERSION: ${{ matrix.version }}
     steps:
       - uses: actions/checkout@v2
       - name: Login on DockerHub registry
@@ -17,6 +22,6 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USER }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       - name: Build and push docker images
-        run: bash build.sh
+        run: docker build --build-arg PHP_VERSION=${{ matrix.version }} -t danybmx/php:${{ matrix.version }}-apache .
       - name: Push docker images
-        run: bash push.sh
+        run: docker push danybmx/php:${{ matrix.version }}-apache

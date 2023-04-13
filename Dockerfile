@@ -1,7 +1,5 @@
-ARG PHP_VERSION=7.2
+ARG PHP_VERSION=8.2
 FROM php:${PHP_VERSION}-apache
-
-COPY scripts/ /scripts
 
 # Configure php extensions
 RUN apt-get update && apt-get install -y --no-install-recommends \
@@ -13,16 +11,45 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         git \
         zip \
         libxml2-dev \
+        libpq-dev \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
-RUN docker-php-ext-install zip
-RUN docker-php-ext-install exif
-RUN docker-php-ext-install mysqli pdo pdo_mysql
-RUN docker-php-ext-install soap
+# Imagic
 RUN pecl install imagick && docker-php-ext-enable imagick
 
-RUN /scripts/install-gd.sh
+# GD
+RUN bash -c "if [[[ \"$PHP_VERSION\" == 7.2* ]] || [[ \"$PHP_VERSION\" == 7.3* ]]; then \
+        docker-php-ext-configure gd --with-gd --with-jpeg-dir; \
+    else \
+        docker-php-ext-configure gd --with-jpeg --with-freetype; \
+    fi"
+RUN docker-php-ext-install gd
+
+# Exif
+RUN docker-php-ext-install exif
+
+# Zip
+RUN docker-php-ext-install zip
+
+# MySQL
+RUN docker-php-ext-install mysqli
+
+# PostgreSQL
+RUN docker-php-ext-install pgsql
+
+# PDO
+RUN docker-php-ext-install pdo pdo_mysql pdo_pgsql
+
+# SOAP
+RUN docker-php-ext-install soap
+
+# XMLRPC
+RUN bash -c "if [[ \"$PHP_VERSION\" == 7.* ]]; then \
+        docker-php-ext-install xmlrpc; \
+    else \
+        pecl install channel://pecl.php.net/xmlrpc-1.0.0RC3 xmlrpc && docker-php-ext-enable xmlrpc; \
+    fi"
 
 # Composer & Craft CLI
 RUN curl --silent --show-error https://getcomposer.org/installer | php \
