@@ -24,28 +24,6 @@ RUN bash -c "if [[ \"$PHP_VERSION\" == 7.2* ]] || [[ \"$PHP_VERSION\" == 7.3* ]]
     else \
         docker-php-ext-configure gd --with-jpeg --with-freetype; \
     fi"
-RUN docker-php-ext-install gd
-
-# Exif
-RUN docker-php-ext-install exif
-
-# Zip
-RUN docker-php-ext-install zip
-
-# MySQL
-RUN docker-php-ext-install mysqli
-
-# PostgreSQL
-RUN docker-php-ext-install pgsql
-
-# PDO
-RUN docker-php-ext-install pdo pdo_mysql pdo_pgsql
-
-# SOAP
-RUN docker-php-ext-install soap
-
-# BCMATH
-RUN docker-php-ext-install bcmath
 
 # XMLRPC
 RUN bash -c "if [[ \"$PHP_VERSION\" == 7.* ]]; then \
@@ -53,6 +31,17 @@ RUN bash -c "if [[ \"$PHP_VERSION\" == 7.* ]]; then \
     else \
         pecl install channel://pecl.php.net/xmlrpc-1.0.0RC3 xmlrpc && docker-php-ext-enable xmlrpc; \
     fi"
+
+RUN docker-php-ext install \
+    mbstring \
+    gd \
+    exif \
+    zip \
+    mysqli \
+    pgsql \
+    pdo pdo_mysql pdo_pgsql \
+    soap \
+    bcmath
 
 # Composer & Craft CLI
 RUN curl --silent --show-error https://getcomposer.org/installer | php \

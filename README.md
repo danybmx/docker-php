@@ -20,6 +20,7 @@ Based on official php images but including **composer** and following extensions
 - imagick
 - xmlrpc
 - bcmath
+- mbstring
 
 ## Apache defaults
 
