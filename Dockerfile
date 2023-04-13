@@ -34,6 +34,7 @@ RUN bash -c "if [[ \"$PHP_VERSION\" == 7.* ]]; then \
     fi"
 
 RUN docker-php-ext-install \
+    sockets \
     mbstring \
     gd \
     exif \
