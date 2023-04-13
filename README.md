@@ -12,8 +12,10 @@ Based on official php images but including **composer** and following extensions
 - zip
 - exif
 - mysqli
+- pgsql
 - pdo
 - pdo_mysql
+- pdo_pgsql
 - soap
 - imagick
 - xmlrpc
