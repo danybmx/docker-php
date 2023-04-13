@@ -44,6 +44,9 @@ RUN docker-php-ext-install pdo pdo_mysql pdo_pgsql
 # SOAP
 RUN docker-php-ext-install soap
 
+# BCMATH
+RUN docker-php-ext-install bcmath
+
 # XMLRPC
 RUN bash -c "if [[ \"$PHP_VERSION\" == 7.* ]]; then \
         docker-php-ext-install xmlrpc; \

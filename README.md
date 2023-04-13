@@ -19,6 +19,7 @@ Based on official php images but including **composer** and following extensions
 - soap
 - imagick
 - xmlrpc
+- bcmath
 
 ## Apache defaults
 
