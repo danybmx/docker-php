@@ -19,7 +19,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 RUN pecl install imagick && docker-php-ext-enable imagick
 
 # GD
-RUN bash -c "if [[[ \"$PHP_VERSION\" == 7.2* ]] || [[ \"$PHP_VERSION\" == 7.3* ]]; then \
+RUN bash -c "if [[ \"$PHP_VERSION\" == 7.2* ]] || [[ \"$PHP_VERSION\" == 7.3* ]]; then \
         docker-php-ext-configure gd --with-gd --with-jpeg-dir; \
     else \
         docker-php-ext-configure gd --with-jpeg --with-freetype; \
