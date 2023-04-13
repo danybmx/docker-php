@@ -1,6 +1,6 @@
 # PHP Docker image for development
 
-![Build](https://github.com/danybmx/docker-php/workflows/Build/badge.svg?branch=main)
+[![Build & Publish](https://github.com/danybmx/docker-php/actions/workflows/build.yml/badge.svg?branch=main)](https://github.com/danybmx/docker-php/actions/workflows/build.yml)
 
 **Disclaimer:** This image is intended for development purposes. Do not use in production
 and create your own based on the official but with only the libraries you need. Use the
