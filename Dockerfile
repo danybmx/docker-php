@@ -32,7 +32,7 @@ RUN bash -c "if [[ \"$PHP_VERSION\" == 7.* ]]; then \
         pecl install channel://pecl.php.net/xmlrpc-1.0.0RC3 xmlrpc && docker-php-ext-enable xmlrpc; \
     fi"
 
-RUN docker-php-ext install \
+RUN docker-php-ext-install \
     mbstring \
     gd \
     exif \
