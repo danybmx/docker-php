@@ -40,6 +40,6 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USER }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       - name: Build and push docker images
-        run: docker build -f Dockerfile.prod --build-arg PHP_VERSION=${{ matrix.version }} -t danybmx/php:${{ matrix.version }}-prod-apache .
+        run: docker build -f Dockerfile.production --build-arg PHP_VERSION=${{ matrix.version }} -t danybmx/php:${{ matrix.version }}-prod-apache .
       - name: Push docker images
         run: docker push danybmx/php:${{ matrix.version }}-prod-apache
