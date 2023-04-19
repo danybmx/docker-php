@@ -1,0 +1,42 @@
+ARG PHP_VERSION=8.2
+FROM php:${PHP_VERSION}-apache
+
+ENV APACHE_DOCUMENT_ROOT /var/www/html/public
+
+RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf /etc/apache2/sites-available/*.conf
+RUN sed -ri -e 's!/var/www/!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf
+
+WORKDIR /var/www/html/
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+        libjpeg-dev \
+        libpng-dev \
+        libmagickwand-dev \
+        libmcrypt-dev \
+        libzip-dev \
+        git \
+        zip \
+        libxml2-dev \
+        libpq-dev \
+        libonig-dev \
+        ffmpeg \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
+RUN pecl install imagick && docker-php-ext-enable imagick
+RUN docker-php-ext-configure gd --with-jpeg --with-freetype
+
+RUN docker-php-ext-install sockets
+RUN docker-php-ext-install mbstring
+RUN docker-php-ext-install gd
+RUN docker-php-ext-install exif
+RUN docker-php-ext-install zip
+RUN docker-php-ext-install mysqli
+RUN docker-php-ext-install pdo
+RUN docker-php-ext-install pdo_mysql
+RUN docker-php-ext-install xml
+RUN docker-php-ext-install opcache
+RUN docker-php-ext-install iconv
+RUN docker-php-ext-install dom
+
+RUN a2enmod headers rewrite expires deflate
