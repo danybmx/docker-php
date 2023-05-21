@@ -15,16 +15,27 @@ jobs:
     env:
       PHP_VERSION: ${{ matrix.version }}
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v1
+      - name: Set up Docker Buildx
+        id: buildx
+        uses: docker/setup-buildx-action@v1
       - name: Login on DockerHub registry
         uses: docker/login-action@v1
         with:
           username: ${{ secrets.DOCKERHUB_USER }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-      - name: Build and push docker images
-        run: docker build --build-arg PHP_VERSION=${{ matrix.version }} -t danybmx/php:${{ matrix.version }}-apache .
-      - name: Push docker images
-        run: docker push danybmx/php:${{ matrix.version }}-apache
+      - name: Build and push
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          platforms: linux/amd64,linux/arm64,linux/arm/v7
+          push: true
+          build-args: |
+            PHP_VERSION=${{ matrix.version }}
+          tags: danybmx/php:${{ matrix.version }}-apache
   build-prod:
     strategy:
       matrix:
@@ -33,13 +44,25 @@ jobs:
     env:
       PHP_VERSION: ${{ matrix.version }}
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v1
+      - name: Set up Docker Buildx
+        id: buildx
+        uses: docker/setup-buildx-action@v1
       - name: Login on DockerHub registry
         uses: docker/login-action@v1
         with:
           username: ${{ secrets.DOCKERHUB_USER }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-      - name: Build and push docker images
-        run: docker build -f Dockerfile.production --build-arg PHP_VERSION=${{ matrix.version }} -t danybmx/php:${{ matrix.version }}-prod-apache .
-      - name: Push docker images
-        run: docker push danybmx/php:${{ matrix.version }}-prod-apache
+      - name: Build and push
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          platforms: linux/amd64,linux/arm64,linux/arm/v7
+          push: true
+          file: Dockerfile.production
+          build-args: |
+            PHP_VERSION=${{ matrix.version }}
+          tags: danybmx/php:${{ matrix.version }}-prod-apache
