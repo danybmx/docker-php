@@ -1,4 +1,4 @@
-ARG PHP_VERSION=8.2
+ARG PHP_VERSION=8.4
 FROM php:${PHP_VERSION}-apache
 
 # Configure php extensions
@@ -50,7 +50,7 @@ RUN curl --silent --show-error https://getcomposer.org/installer | php \
     && mv composer.phar /usr/local/bin/composer \
     && chmod a+x /usr/local/bin/composer
 
-ENV PATH "$PATH:~/.composer/vendor/bin"
+ENV PATH="$PATH:~/.composer/vendor/bin"
 
 # Apache Extensions
 RUN a2enmod headers rewrite expires deflate
