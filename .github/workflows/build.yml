@@ -10,6 +10,7 @@ jobs:
   build:
     strategy:
       matrix:
+        dockerfile: ["Dockerfile", "Dockerfile.apache"]
         version: ["7.2", "7.3", "7.4", "8.0", "8.1", "8.2", "8.3", "8.4"]
     runs-on: ubuntu-latest
     env:
@@ -35,4 +36,5 @@ jobs:
           push: true
           build-args: |
             PHP_VERSION=${{ matrix.version }}
+          file: ${{ matrix.dockerfile }}
           tags: danybmx/php:${{ matrix.version }}-apache
