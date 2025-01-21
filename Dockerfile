@@ -5,9 +5,11 @@ ARG IMAGICK_VERSION=3.7.0
 FROM php:${PHP_VERSION}-apache
 
 # PHP Extensions
-RUN cd /tmp
 ARG IMAGICK_VERSION
 ENV IMAGICK_VERSION=${IMAGICK_VERSION}
+
+WORKDIR /tmp
+
 RUN apt-get update && apt-get install -y --no-install-recommends \
     libpng-dev \
     libmcrypt-dev \
@@ -27,7 +29,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     pkg-config \
     libmagickwand-dev \
     libjpeg-dev \
-    && curl -L -v -o /tmp/imagick.tar.gz https://github.com/Imagick/imagick/archive/tags/${IMAGICK_VERSION}.tar.gz \
+    && curl -L -o /tmp/imagick.tar.gz https://github.com/Imagick/imagick/archive/tags/${IMAGICK_VERSION}.tar.gz \
     && tar --strip-components=1 -vxf /tmp/imagick.tar.gz \
     && sed -i 's/php_strtolower/zend_str_tolower/g' imagick.c \
     && phpize \
@@ -64,6 +66,7 @@ ENV PATH="$PATH:~/.composer/vendor/bin"
 
 # Apache Extensions
 RUN a2enmod headers rewrite expires deflate
+
 # Memory limit
 RUN echo "memory_limit = ${MEMORY_LIMIT}" >> /usr/local/etc/php/conf.d/docker-php-memlimit.ini;
 
