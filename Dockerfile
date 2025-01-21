@@ -45,16 +45,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && mv composer.phar /usr/local/bin/composer \
     && chmod a+x /usr/local/bin/composer \
     && apt-get purge -y --auto-remove \
-        libpng-dev \
-        libmcrypt-dev \
-        libzip-dev \
         git \
-        libxml2-dev \
-        libpq-dev \
-        libonig-dev \
-        imagemagick \
-        jpegoptim \
-        libwebp-dev \
         build-essential \
         autoconf \
         libtool \
