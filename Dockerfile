@@ -1,11 +1,9 @@
-ARG PHP_VERSION=8.4
+ARG PHP_VERSION=7.4
+
 FROM php:${PHP_VERSION}-apache
 
-# Configure php extensions
 RUN apt-get update && apt-get install -y --no-install-recommends \
-        libjpeg-dev \
         libpng-dev \
-        libmagickwand-dev \
         libmcrypt-dev \
         libzip-dev \
         git \
@@ -13,42 +11,57 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         libxml2-dev \
         libpq-dev \
         libonig-dev \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
-
-# Imagic
-RUN pecl install imagick && docker-php-ext-enable imagick
-
-# GD
-RUN bash -c "if [[ \"$PHP_VERSION\" == 7.2* ]] || [[ \"$PHP_VERSION\" == 7.3* ]]; then \
+        imagemagick \
+        jpegoptim \
+        libwebp-dev \
+        curl \
+        build-essential \
+        autoconf \
+        libtool \
+        pkg-config \
+        libmagickwand-dev \
+        libjpeg-dev \
+    && curl -L -v -o /tmp/imagick.tar.gz https://github.com/Imagick/imagick/archive/tags/3.7.0.tar.gz \
+    && tar --strip-components=1 -vxf /tmp/imagick.tar.gz \
+    && sed -i 's/php_strtolower/zend_str_tolower/g' imagick.c \
+    && phpize \
+    && ./configure \
+    && make \
+    && make install \
+    && echo "extension=imagick.so" > /usr/local/etc/php/conf.d/ext-imagick.ini \
+    && docker-php-ext-enable imagick \
+    && bash -c "if [[ \"$PHP_VERSION\" == 7.2* ]] || [[ \"$PHP_VERSION\" == 7.3* ]]; then \
         docker-php-ext-configure gd --with-gd --with-jpeg-dir; \
     else \
         docker-php-ext-configure gd --with-jpeg --with-freetype; \
-    fi"
-
-# XMLRPC
-RUN bash -c "if [[ \"$PHP_VERSION\" == 7.* ]]; then \
+    fi" \
+    && bash -c "if [[ \"$PHP_VERSION\" == 7.* ]]; then \
         docker-php-ext-install xmlrpc; \
     else \
         pecl install channel://pecl.php.net/xmlrpc-1.0.0RC3 xmlrpc && docker-php-ext-enable xmlrpc; \
-    fi"
-
-RUN docker-php-ext-install \
-    sockets \
-    mbstring \
-    gd \
-    exif \
-    zip \
-    mysqli \
-    pgsql \
-    pdo pdo_mysql pdo_pgsql \
-    soap \
-    bcmath
-
-# Composer & Craft CLI
-RUN curl --silent --show-error https://getcomposer.org/installer | php \
+    fi" \
+    && docker-php-ext-install sockets mbstring gd exif zip mysqli pgsql pdo pdo_mysql pdo_pgsql soap bcmath \
+    && curl --silent --show-error https://getcomposer.org/installer | php \
     && mv composer.phar /usr/local/bin/composer \
-    && chmod a+x /usr/local/bin/composer
+    && chmod a+x /usr/local/bin/composer \
+    && apt-get purge -y --auto-remove \
+        libpng-dev \
+        libmcrypt-dev \
+        libzip-dev \
+        git \
+        libxml2-dev \
+        libpq-dev \
+        libonig-dev \
+        imagemagick \
+        jpegoptim \
+        libwebp-dev \
+        build-essential \
+        autoconf \
+        libtool \
+        pkg-config \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/* \
+    && rm -rf /tmp/*
 
 ENV PATH="$PATH:~/.composer/vendor/bin"
 
