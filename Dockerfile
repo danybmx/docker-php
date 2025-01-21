@@ -5,6 +5,7 @@ ARG IMAGICK_VERSION=3.7.0
 FROM php:${PHP_VERSION}-apache
 
 # PHP Extensions
+ARG IMAGICK_VERSION
 ENV IMAGICK_VERSION=${IMAGICK_VERSION}
 RUN apt-get update && apt-get install -y --no-install-recommends \
     libpng-dev \
@@ -62,9 +63,7 @@ ENV PATH="$PATH:~/.composer/vendor/bin"
 
 # Apache Extensions
 RUN a2enmod headers rewrite expires deflate
-
 # Memory limit
-ENV MEMORY_LIMIT=${MEMORY_LIMIT}
 RUN echo "memory_limit = ${MEMORY_LIMIT}" >> /usr/local/etc/php/conf.d/docker-php-memlimit.ini;
 
 # Update document root
