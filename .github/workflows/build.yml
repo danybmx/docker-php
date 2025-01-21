@@ -15,6 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       PHP_VERSION: ${{ matrix.version }}
+      TAG: ${{ matrix.version }}${{ matrix.dockerfile == 'Dockerfile.apache' && '-apache' || '' }}
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -37,4 +38,4 @@ jobs:
           build-args: |
             PHP_VERSION=${{ matrix.version }}
           file: ${{ matrix.dockerfile }}
-          tags: danybmx/php:${{ matrix.version }}-apache
+          tags: danybmx/php:${{ env.TAG }}
