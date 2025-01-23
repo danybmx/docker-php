@@ -1,5 +1,4 @@
 ARG PHP_VERSION=8.4
-ARG MEMORY_LIMIT=512M
 ARG IMAGICK_VERSION=3.7.0
 
 FROM php:${PHP_VERSION}
@@ -64,6 +63,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 ENV PATH="$PATH:~/.composer/vendor/bin"
 
-RUN echo "memory_limit = ${MEMORY_LIMIT}" >> /usr/local/etc/php/conf.d/docker-php-memlimit.ini;
+RUN echo "memory_limit = 512M" >> /usr/local/etc/php/conf.d/docker-php-memlimit.ini;
 
 WORKDIR /app
