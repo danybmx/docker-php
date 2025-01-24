@@ -37,7 +37,3 @@ The config file is placed on `/etc/apache2/apache2.conf`.
 ## PHP default
 
 It goes with all PHP distribution defaults except for memory which it defaults to 512MB.
-
-## PHP config file
-
-The config file is placed on `/usr/local/etc/php/conf.d/docker-php-memlimit.ini`.
