@@ -23,8 +23,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libjpeg-dev \
     libmagickcore-dev \
     libmagickwand-dev \
-    imagemagick \
-    && curl -L -o /tmp/imagick.tar.gz https://github.com/Imagick/imagick/archive/tags/3.7.0.tar.gz \
+    imagemagick
+
+RUN curl -L -o /tmp/imagick.tar.gz https://github.com/Imagick/imagick/archive/tags/3.7.0.tar.gz \
     && tar --strip-components=1 -vxf /tmp/imagick.tar.gz \
     && sed -i 's/php_strtolower/zend_str_tolower/g' imagick.c \
     && phpize \
@@ -32,8 +33,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && make \
     && make install \
     && echo "extension=imagick.so" > /usr/local/etc/php/conf.d/ext-imagick.ini \
-    && docker-php-ext-enable imagick \
-    && bash -c "if [[ \"$PHP_VERSION\" == 7.2* ]] || [[ \"$PHP_VERSION\" == 7.3* ]]; then \
+    && docker-php-ext-enable imagick
+
+RUN bash -c "if [[ \"$PHP_VERSION\" == 7.2* ]] || [[ \"$PHP_VERSION\" == 7.3* ]]; then \
     docker-php-ext-configure gd --with-gd --with-jpeg-dir; \
     else \
     docker-php-ext-configure gd --with-jpeg --with-freetype; \
@@ -42,12 +44,15 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     docker-php-ext-install xmlrpc; \
     else \
     pecl install channel://pecl.php.net/xmlrpc-1.0.0RC3 xmlrpc && docker-php-ext-enable xmlrpc; \
-    fi" \
-    && docker-php-ext-install sockets mbstring gd exif zip mysqli pgsql pdo pdo_mysql pdo_pgsql soap bcmath \
-    && curl --silent --show-error https://getcomposer.org/installer | php \
+    fi"
+
+RUN docker-php-ext-install sockets mbstring gd exif zip mysqli pgsql pdo pdo_mysql pdo_pgsql soap bcmath
+
+RUN curl --silent --show-error https://getcomposer.org/installer | php \
     && mv composer.phar /usr/local/bin/composer \
-    && chmod a+x /usr/local/bin/composer \
-    && apt-get purge -y --auto-remove \
+    && chmod a+x /usr/local/bin/composer
+
+RUN apt-get purge -y --auto-remove \
     git \
     build-essential \
     autoconf \
