@@ -8,19 +8,17 @@ Dockerfiles as an example of how to install the libraries in different ways.
 
 Based on official php images but including **composer** and following extensions:
 
-- gd
-- zip
+- bcmath
 - exif
+- gd
+- mbstring
 - mysqli
-- pgsql
 - pdo
 - pdo_mysql
 - pdo_pgsql
-- soap
-- imagick
-- xmlrpc
-- bcmath
-- mbstring
+- pgsql
+- sockets
+- zip
 
 ## Apache defaults
 

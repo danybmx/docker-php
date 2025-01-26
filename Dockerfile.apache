@@ -21,9 +21,6 @@ RUN install-php-extensions \
     pdo_mysql \
     pdo_pgsql \
     bcmath \
-    imagick \
-    xmlrpc \
-    soap \
     @composer
 
 ENV PATH="$PATH:~/.composer/vendor/bin"
