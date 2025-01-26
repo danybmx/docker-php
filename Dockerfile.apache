@@ -4,7 +4,7 @@ FROM php:${PHP_VERSION}-apache
 
 WORKDIR /tmp
 
-RUN apt-get update && apt-get install -y --no-install-recommends \
+RUN CC=gcc apt-get update && apt-get install -y --no-install-recommends \
     libpng-dev \
     libmcrypt-dev \
     libzip-dev \
