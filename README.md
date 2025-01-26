@@ -6,19 +6,7 @@
 and create your own based on the official but with only the libraries you need. Use the
 Dockerfiles as an example of how to install the libraries in different ways.
 
-Based on official php images but including **composer** and following extensions:
-
-- bcmath
-- exif
-- gd
-- mbstring
-- mysqli
-- pdo
-- pdo_mysql
-- pdo_pgsql
-- pgsql
-- sockets
-- zip
+Based on official php images but including **[docker-php-extension-installer](https://github.com/mlocati/docker-php-extension-installer)** script and **composer**
 
 ## Apache defaults
 
