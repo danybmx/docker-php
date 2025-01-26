@@ -4,7 +4,7 @@ FROM php:${PHP_VERSION}
 
 WORKDIR /tmp
 
-RUN CC=gcc apt-get update && apt-get install -y --no-install-recommends \
+RUN apt-get update && apt-get install -y --no-install-recommends \
     libpng-dev \
     libmcrypt-dev \
     libzip-dev \
@@ -13,7 +13,6 @@ RUN CC=gcc apt-get update && apt-get install -y --no-install-recommends \
     libxml2-dev \
     libpq-dev \
     libonig-dev \
-    imagemagick \
     jpegoptim \
     libwebp-dev \
     curl \
@@ -21,9 +20,10 @@ RUN CC=gcc apt-get update && apt-get install -y --no-install-recommends \
     autoconf \
     libtool \
     pkg-config \
-    libmagickcore-6.q16-dev \
-    libmagickwand-dev \
     libjpeg-dev \
+    libmagickcore-dev \
+    libmagickwand-dev \
+    imagemagick \
     && curl -L -o /tmp/imagick.tar.gz https://github.com/Imagick/imagick/archive/tags/3.7.0.tar.gz \
     && tar --strip-components=1 -vxf /tmp/imagick.tar.gz \
     && sed -i 's/php_strtolower/zend_str_tolower/g' imagick.c \
