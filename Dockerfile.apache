@@ -21,6 +21,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     autoconf \
     libtool \
     pkg-config \
+    libmagickcore-6.q16-dev \
     libmagickwand-dev \
     libjpeg-dev \
     && curl -L -o /tmp/imagick.tar.gz https://github.com/Imagick/imagick/archive/tags/3.7.0.tar.gz \
