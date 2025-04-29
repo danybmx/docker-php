@@ -2,6 +2,8 @@ ARG PHP_VERSION=8.4
 
 FROM php:${PHP_VERSION}
 
+RUN apt-get update && apt-get install -y openssh-client
+
 RUN curl -sSLf \
   -o /usr/local/bin/install-php-extensions \
   https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions && \
