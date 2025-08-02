@@ -7,7 +7,7 @@ RUN curl -sSLf \
   https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions && \
   chmod +x /usr/local/bin/install-php-extensions
 
-RUN install-php-extensions gd zip exif mysqli pgsql pdo pdo_mysql pdo_pgsql soap imagick xmlrpc bcmath @composer
+RUN install-php-extensions gd zip exif mysqli pgsql pdo pdo_mysql pdo_pgsql soap imagick xmlrpc bcmath @composer opcache
 
 ENV PATH="$PATH:~/.composer/vendor/bin"
 
